@@ -21,9 +21,9 @@ The local repository must have both URLs configured under the 'origin' remote:
    - Verify `Commit Description` is provided. If valid, proceed immediately. Do not require or look for a feature name.
 
 2. **Execute Simultaneous Dual-Repo Push:**
-   Call the `sync-repo-direct-master` skill once for the main local repository. Since 'origin' is configured with dual push URLs, a single push operation will update the master branch on both remotes.
+   Call the `sync-repo-direct-main` skill once for the main local repository. Since 'origin' is configured with dual push URLs, a single push operation will update the main branch on both remotes.
    - `repo_path`: "C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect"
    - `commit_message`: User's Commit Description
 
 3. **Consolidated Reporting:**
-   Present the final execution report confirming that the push command to the master branch was successfully broadcasted to both repository destinations.
+   Present the final execution report confirming that the push command to the main branch was successfully broadcasted to both repository destinations.
