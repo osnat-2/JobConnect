@@ -1,0 +1,4 @@
+pika
+pdfminer.six
+python-docx
+requests
