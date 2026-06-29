@@ -99,9 +99,9 @@ Technical rules:
 - For all .NET / C# service implementations, use a 7-layer modeling structure explicitly:
   1. Controllers / endpoints
   2. Services
-  3. Service interfaces
+  3. Service interfaces (use Dependency Injection)
   4. Repositories
-  5. Repository interfaces
+  5. Repository interfaces (use Dependency Injection)
   6. DbContext / EF Core persistence layer
   7. DTOs for request/response contracts
 - Keep dependencies flowing inward: controllers depend on service interfaces, services depend on repository interfaces, repositories use DbContext, and DTOs are used at the API boundary.
