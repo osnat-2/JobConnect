@@ -105,6 +105,12 @@ services:
   cv-parser:
     build: ./src/workers/CVParserWorker
     container_name: cv-parser
+    environment:
+      - RABBITMQ__HOST=rabbitmq
+      - CVPARSER_EXCHANGE=application-events
+      - CVPARSER_QUEUE=cv-parser-queue
+      - CVPARSER_DLX=cv-parser-dlx
+      - CVPARSER_DLQ=cv-parser-dlq
     depends_on:
       rabbitmq:
         condition: service_healthy

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {}
+    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
+    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
+        "projectUniqueName": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
         "projectName": "ApplicationService",
-        "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
+        "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
         "packagesPath": "C:\\Users\\משתמש\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\obj\\",
+        "outputPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

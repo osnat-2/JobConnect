@@ -1,4 +1,5 @@
+aiohttp
 pika
 pdfminer.six
 python-docx
-requests
+pytest
