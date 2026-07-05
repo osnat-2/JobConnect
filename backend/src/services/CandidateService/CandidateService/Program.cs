@@ -1,7 +1,7 @@
 using CandidateService.Data;
 using CandidateService.Interfaces;
 using CandidateService.Services;
-using JobConnect.Shared;
+using backend.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;

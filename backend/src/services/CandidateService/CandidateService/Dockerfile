@@ -1,0 +1,15 @@
+# CandidateService - .NET 8 multi-stage Dockerfile
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY CandidateService.csproj ./
+RUN dotnet restore ./CandidateService.csproj
+COPY . ./
+
+RUN dotnet publish ./CandidateService.csproj -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app .
+ENV ASPNETCORE_URLS=http://+:80
+EXPOSE 80
+ENTRYPOINT ["dotnet","CandidateService.dll"]
