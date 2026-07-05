@@ -4,6 +4,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CorrelationIdInterceptor } from './core/interceptors/correlation-id.interceptor';
+import { SharedModule } from './shared/shared.module';
+import { ApplicationsModule } from './features/applications/applications.module';
 
 /**
  * Root Application Module
@@ -14,7 +16,7 @@ import { CorrelationIdInterceptor } from './core/interceptors/correlation-id.int
  */
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [BrowserModule, HttpClientModule, SharedModule, ApplicationsModule],
   providers: [
     /**
      * Register HTTP Interceptor for Correlation ID injection

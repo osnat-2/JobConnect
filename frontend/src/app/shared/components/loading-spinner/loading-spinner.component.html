@@ -1,0 +1,10 @@
+<div
+  class="loader-backdrop"
+  [ngClass]="{ 'visible': isLoading$ | async, 'hidden': !(isLoading$ | async) }"
+  [style.background-color]="backdropColor"
+>
+  <div class="spinner-container">
+    <div class="spinner" [style.border-top-color]="spinnerColor"></div>
+    <p class="loading-message">{{ message }}</p>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="file-upload-container">
+  <h3 class="upload-title">{{ uploadLabel }}</h3>
+
+  <div *ngIf="selectedFile" class="file-selected">
+    <span class="file-icon">📄</span>
+    <span class="file-info">
+      <span class="file-name">{{ selectedFile.name }}</span>
+      <span class="file-size">({{ formatFileSize(selectedFile.size) }})</span>
+    </span>
+    <button type="button" (click)="removeFile()" class="remove-btn">
+      Remove
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <div
+    *ngIf="!selectedFile"
+    class="drag-zone"
+    [ngClass]="{ dragover: isDragover }"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <span class="document-icon">📄</span>
+    <p class="drag-text">{{ dragText }}</p>
+    <button
+      type="button"
+      (click)="fileInput.click()"
+      class="upload-btn"
+      [disabled]="isUploading || disabled"
+    >
+      {{ isUploading ? 'Uploading...' : uploadLabel }}
+    </button>
+    <p class="supported-formats">
+      Supported formats: {{ acceptedFormats.join(', ').toUpperCase() }} (max {{ formatFileSize(maxFileSize) }})
+    </p>
+  </div>
+
+  <input
+    #fileInput
+    type="file"
+    hidden
+    [accept]="acceptedFormats.join(',')"
+    (change)="onFileSelected($event)"
+  />
+
+  <div *ngIf="selectedFile" class="action-buttons">
+    <button
+      type="button"
+      (click)="confirmUpload()"
+      class="btn-primary"
+      [disabled]="isUploading"
+    >
+      {{ isUploading ? 'Uploading...' : 'Confirm Upload' }}
+    </button>
+    <button
+      type="button"
+      (click)="cancelUpload()"
+      class="btn-secondary"
+      [disabled]="isUploading"
+    >
+      Cancel
+    </button>
+  </div>
+</div>

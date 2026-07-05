@@ -1,0 +1,99 @@
+<div class="kanban-board-container">
+  <div class="candidate-header">
+    <div class="candidate-info">
+      <h2>
+        👤 {{ candidate?.firstName }} {{ candidate?.lastName }}
+        <span class="candidate-id">(ID: {{ candidate?.id }})</span>
+      </h2>
+      <p class="contact-info">
+        <span *ngIf="candidate?.email">📧 {{ candidate?.email }}</span>
+        <span *ngIf="candidate?.phone">📞 {{ candidate?.phone }}</span>
+      </p>
+      <a
+        *ngIf="candidate?.resumeUrl"
+        [href]="candidate?.resumeUrl"
+        target="_blank"
+        rel="noopener"
+        class="resume-link"
+      >
+        📄 {{ candidate?.resumeFileName || 'Download Resume' }}
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    ⚠️ {{ error }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading applications...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="kanban-columns">
+    <div *ngFor="let column of columns" class="kanban-column">
+      <div class="column-header">
+        <h3 class="column-title">{{ column.title }}</h3>
+        <span class="app-count">{{ column.count }}</span>
+      </div>
+
+      <div
+        class="drop-zone"
+        [ngClass]="{ 'drop-zone-active': draggedCard?.status !== column.status }"
+        (dragover)="onDragOver($event, column)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event, column)"
+      >
+        <div
+          *ngFor="let application of column.applications"
+          class="application-card"
+          [ngClass]="{ dragging: draggedCard?.id === application.id }"
+          draggable="true"
+          (dragstart)="onDragStart($event, application)"
+          (click)="onCardClick(application)"
+        >
+          <div class="card-header">
+            <h4 class="job-title">{{ application.jobId }}</h4>
+            <span class="company-name">TechCorp Inc</span>
+          </div>
+
+          <div class="card-meta">
+            <span class="applied-date">📅 Applied: {{ application.appliedAt | date: 'MMM d, y' }}</span>
+            <span class="job-preview">💼 Senior Developer - Remote</span>
+          </div>
+
+          <div *ngIf="application.interviews?.length > 0" class="interview-section">
+            <div *ngFor="let interview of application.interviews" class="interview-info">
+              <span class="interview-title">📞 Interview Scheduled</span>
+              <span class="interview-time">{{ interview.scheduledAt | date: 'MMM d @ HH:mm' }}</span>
+              <span class="interview-location" *ngIf="interview.location">📍 {{ interview.location }}</span>
+              <span class="interviewer-email">📧 {{ interview.interviewerEmail }}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button
+              *ngIf="column.status === 'InterviewScheduled'"
+              type="button"
+              (click)="onScheduleInterview(application); $event.stopPropagation()"
+              class="btn-small"
+            >
+              Reschedule
+            </button>
+            <button
+              type="button"
+              (click)="onCardClick(application); $event.stopPropagation()"
+              class="btn-small"
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="column.applications.length === 0" class="empty-state">
+          <p>No items</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
