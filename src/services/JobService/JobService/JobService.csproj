@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../../shared/JobConnect.Shared/JobConnect.Shared.csproj" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="8.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />

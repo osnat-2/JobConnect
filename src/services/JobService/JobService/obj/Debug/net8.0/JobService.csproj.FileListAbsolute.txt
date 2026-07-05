@@ -62,3 +62,5 @@ C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\fina
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\JobService\JobService\obj\Debug\net8.0\JobService.pdb
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\JobService\JobService\obj\Debug\net8.0\JobService.genruntimeconfig.cache
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\JobService\JobService\obj\Debug\net8.0\ref\JobService.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\JobService\JobService\bin\Debug\net8.0\JobConnect.Shared.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\JobService\JobService\bin\Debug\net8.0\JobConnect.Shared.pdb

@@ -26,4 +26,9 @@ When analyzing code or responding to user requests, adhere to the following work
    - **Refactoring Verdict:** Clear judgment (e.g., "Highly Recommended for Shared", "Keep Duplicated - Domain Specific", or "Borderline"). Explain the architectural trade-off.
    - **Refactoring Plan:** Step-by-step code example of how the new shared component should look and how the existing code should reference it.
 
+4. **Post-Analysis Handoff:**
+   - After completing the duplicate analysis, if the findings are actionable and suitable for extraction, hand off the result to the DuplicateFixer agent.
+   - Use the DuplicateFixer agent to implement the refactoring directly in the workspace when the verdict is "Highly Recommended for Shared" or when the report identifies a clear cross-cutting concern.
+   - Do not hand off domain-specific duplication that should remain local to a service unless the user explicitly requests extraction.
+
 Maintain a professional, analytical, and objective architectural tone. Focus on system maintainability and scalability.

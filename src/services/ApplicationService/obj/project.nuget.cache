@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "D6diDd/Qadk=",
+  "dgSpecHash": "5RQNayM7tVk=",
   "success": true,
-  "projectFilePath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
+  "projectFilePath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\משתמש\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\משתמש\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.18\\microsoft.aspnetcore.openapi.8.0.18.nupkg.sha512",

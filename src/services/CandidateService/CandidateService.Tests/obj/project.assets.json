@@ -2486,6 +2486,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "JobConnect.Shared": "1.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.18",
           "Microsoft.EntityFrameworkCore": "8.0.10",
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "8.0.10",
@@ -2500,6 +2501,23 @@
         },
         "runtime": {
           "bin/placeholder/CandidateService.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "JobConnect.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Serilog.AspNetCore": "8.0.0",
+          "Serilog.Formatting.Compact": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/JobConnect.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/JobConnect.Shared.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
@@ -7714,6 +7732,11 @@
       "type": "project",
       "path": "../CandidateService/CandidateService.csproj",
       "msbuildProject": "../CandidateService/CandidateService.csproj"
+    },
+    "JobConnect.Shared/1.0.0": {
+      "type": "project",
+      "path": "../../../shared/JobConnect.Shared/JobConnect.Shared.csproj",
+      "msbuildProject": "../../../shared/JobConnect.Shared/JobConnect.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7732,11 +7755,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\CandidateService.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\CandidateService.Tests.csproj",
       "projectName": "CandidateService.Tests",
-      "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\CandidateService.Tests.csproj",
+      "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\CandidateService.Tests.csproj",
       "packagesPath": "C:\\Users\\משתמש\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\obj\\",
+      "outputPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -7758,8 +7781,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService\\CandidateService.csproj": {
-              "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService\\CandidateService.csproj"
+            "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService\\CandidateService.csproj": {
+              "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\CandidateService\\CandidateService\\CandidateService.csproj"
             }
           }
         }

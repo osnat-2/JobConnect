@@ -125,3 +125,5 @@ C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\fina
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\obj\Debug\net8.0\ApplicationService.pdb
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\obj\Debug\net8.0\ApplicationService.genruntimeconfig.cache
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\obj\Debug\net8.0\ref\ApplicationService.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\bin\Debug\net8.0\JobConnect.Shared.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\bin\Debug\net8.0\JobConnect.Shared.pdb

@@ -118,6 +118,13 @@ services:
   notification-worker:
     build: ./src/workers/NotificationWorker
     container_name: notification-worker
+    environment:
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__PORT=5672
+      - NOTIFICATION_EXCHANGE=application-events
+      - NOTIFICATION_QUEUE=notification-queue
+      - NOTIFICATION_DLX=notification-dlx
+      - NOTIFICATION_DLQ=notification-dlq
     depends_on:
       rabbitmq:
         condition: service_healthy

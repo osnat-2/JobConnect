@@ -21,6 +21,7 @@ Build and run:
 - Docker build: `docker build -t notification-worker .`
 
 Notes:
-- This directory contains a placeholder worker loop; implement real message consumption and delivery logic.
+- The worker now consumes interview and notification events from RabbitMQ and produces delivery/failure events.
+- Delivery is SMTP-backed when credentials are configured; otherwise the worker simulates successful delivery for local development.
 - Keep notification state in event-driven workflow rather than direct service database writes.
 - Ensure delivered metrics and failure events are traceable via Correlation IDs when possible.

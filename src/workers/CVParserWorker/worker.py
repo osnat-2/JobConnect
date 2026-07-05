@@ -1,10 +1,10 @@
 import asyncio
 import json
-import logging
 import os
-import uuid
+import sys
 from datetime import datetime, timezone
 from io import BytesIO, StringIO
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
@@ -16,51 +16,15 @@ from pdfminer.layout import LAParams
 from pika.adapters.asyncio_connection import AsyncioConnection
 from pika.exchange_type import ExchangeType
 
-
-class TransientWorkerError(Exception):
-    pass
-
-
-class PermanentWorkerError(Exception):
-    pass
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from shared.worker_common import PermanentWorkerError, TransientWorkerError, create_logger, normalize_correlation_id
 
 
-class JsonFormatter(logging.Formatter):
-    def format(self, record: logging.LogRecord) -> str:
-        payload = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "level": record.levelname,
-            "message": record.getMessage(),
-            "worker": "cv-parser",
-        }
-
-        extras = getattr(record, "extra", {})
-        if isinstance(extras, dict):
-            payload.update(extras)
-
-        if record.exc_info:
-            payload["exception"] = self.formatException(record.exc_info)
-
-        return json.dumps(payload, ensure_ascii=False)
-
-
-logger = logging.getLogger("cv-parser-worker")
-logger.setLevel(logging.INFO)
-handler = logging.StreamHandler()
-handler.setFormatter(JsonFormatter())
-logger.addHandler(handler)
+logger = create_logger("cv-parser-worker")
 
 
 def current_timestamp() -> str:
     return datetime.now(timezone.utc).isoformat()
-
-
-def normalize_correlation_id(raw_id: Any) -> str:
-    if raw_id is None:
-        return str(uuid.uuid4())
-
-    raw = str(raw_id).strip()
-    return raw if raw else str(uuid.uuid4())
 
 
 def infer_file_type(storage_url: str, file_type: Optional[str]) -> str:

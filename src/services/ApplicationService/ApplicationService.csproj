@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../shared/JobConnect.Shared/JobConnect.Shared.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">

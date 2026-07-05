@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj": {}
+    "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj": {}
   },
   "projects": {
-    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
+    "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
+        "projectUniqueName": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
         "projectName": "ApplicationService",
-        "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
+        "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj",
         "packagesPath": "C:\\Users\\משתמש\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\obj\\",
+        "outputPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,7 +32,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\JobConnect.Shared.csproj": {
+                "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\JobConnect.Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -113,14 +117,14 @@
         }
       }
     },
-    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj": {
+    "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj",
         "projectName": "ApplicationService.Tests",
-        "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj",
+        "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\ApplicationService.Tests.csproj",
         "packagesPath": "C:\\Users\\משתמש\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\obj\\",
+        "outputPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -142,8 +146,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
-                "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj"
+              "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj": {
+                "projectPath": "C:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\services\\ApplicationService\\ApplicationService.csproj"
               }
             }
           }
@@ -193,6 +197,85 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\JobConnect.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\JobConnect.Shared.csproj",
+        "projectName": "JobConnect.Shared",
+        "projectPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\JobConnect.Shared.csproj",
+        "packagesPath": "C:\\Users\\משתמש\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\משתמש\\Documents\\לימודים יד\\וארכיטקטורה AI\\final\\JobConnect\\src\\shared\\JobConnect.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\משתמש\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\משתמש\\Documents\\לימודים יד\\Practikum\\סמינר החדש תשפ_ו\\practicum-nugets\\NMHLogin.1.0.23\\lib\\net7.0": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Serilog.Formatting.Compact": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

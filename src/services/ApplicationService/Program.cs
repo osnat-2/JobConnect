@@ -1,24 +1,15 @@
 using ApplicationService.Data;
 using ApplicationService.Interfaces;
 using ApplicationService.Services;
+using JobConnect.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
-using Serilog.Context;
-using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, services, loggerConfiguration) =>
-{
-    loggerConfiguration
-        .Enrich.FromLogContext()
-        .Enrich.WithProperty("Service", "ApplicationService")
-        .WriteTo.Console(new RenderedCompactJsonFormatter());
-});
-
-builder.Services.AddHttpContextAccessor();
+builder.AddSharedObservability("ApplicationService");
 var connectionString = builder.Configuration["POSTGRES__CONN"] ?? "Host=localhost;Database=ats;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IApplicationStore, EfApplicationStore>();
@@ -41,32 +32,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
-app.Use(async (context, next) =>
-{
-    var correlationId = context.Request.Headers["X-Correlation-ID"].FirstOrDefault() ?? Guid.NewGuid().ToString("N");
-    context.Items["CorrelationId"] = correlationId;
-    context.Response.Headers["X-Correlation-ID"] = correlationId;
-
-    using var _ = LogContext.PushProperty("CorrelationId", correlationId);
-    await next();
-});
-
-app.MapGet("/health", async (HealthCheckService healthCheckService) =>
-{
-    var report = await healthCheckService.CheckHealthAsync();
-    var payload = new
-    {
-        status = report.Status.ToString().ToLowerInvariant(),
-        checks = report.Entries.Select(entry => new
-        {
-            name = entry.Key,
-            status = entry.Value.Status.ToString().ToLowerInvariant(),
-            description = entry.Value.Description
-        })
-    };
-
-    return Results.Json(payload, statusCode: report.Status == HealthStatus.Healthy ? 200 : 503);
-});
+app.UseSharedCorrelationMiddleware();
+app.MapSharedHealthEndpoint();
 
 app.MapGet("/", () => Results.Ok(new { service = "ApplicationService", status = "running" }));
 app.MapControllers();

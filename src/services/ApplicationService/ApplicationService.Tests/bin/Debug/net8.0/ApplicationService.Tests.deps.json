@@ -758,6 +758,7 @@
       "xunit.runner.visualstudio/2.8.2": {},
       "ApplicationService/1.0.0": {
         "dependencies": {
+          "JobConnect.Shared": "1.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.18",
           "Microsoft.EntityFrameworkCore": "8.0.10",
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "8.0.10",
@@ -769,6 +770,18 @@
         },
         "runtime": {
           "ApplicationService.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "JobConnect.Shared/1.0.0": {
+        "dependencies": {
+          "Serilog.AspNetCore": "8.0.0",
+          "Serilog.Formatting.Compact": "2.0.0"
+        },
+        "runtime": {
+          "JobConnect.Shared.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1196,6 +1209,11 @@
       "hashPath": "xunit.runner.visualstudio.2.8.2.nupkg.sha512"
     },
     "ApplicationService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "JobConnect.Shared/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

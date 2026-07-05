@@ -137,3 +137,5 @@ C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\fina
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\ApplicationService.Tests\obj\Debug\net8.0\ApplicationService.Tests.pdb
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\ApplicationService.Tests\obj\Debug\net8.0\ApplicationService.Tests.genruntimeconfig.cache
 C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\ApplicationService.Tests\obj\Debug\net8.0\ref\ApplicationService.Tests.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\ApplicationService.Tests\bin\Debug\net8.0\JobConnect.Shared.dll
+C:\Users\משתמש\Documents\לימודים יד\וארכיטקטורה AI\final\JobConnect\src\services\ApplicationService\ApplicationService.Tests\bin\Debug\net8.0\JobConnect.Shared.pdb

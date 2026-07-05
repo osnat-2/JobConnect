@@ -11,6 +11,7 @@
           "AspNetCore.HealthChecks.MongoDb": "8.0.1",
           "AspNetCore.HealthChecks.Redis": "8.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "JobConnect.Shared": "1.0.0",
           "Microsoft.AspNetCore.OpenApi": "8.0.0",
           "MongoDB.Driver": "2.22.0",
           "RabbitMQ.Client": "6.8.0",
@@ -502,6 +503,18 @@
             "fileVersion": "0.6.2.0"
           }
         }
+      },
+      "JobConnect.Shared/1.0.0": {
+        "dependencies": {
+          "Serilog.AspNetCore": "8.0.0",
+          "Serilog.Formatting.Compact": "2.0.0"
+        },
+        "runtime": {
+          "JobConnect.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -930,6 +943,11 @@
       "sha512": "sha512-jPao/LdUNLUz8rn3H1D8W7wQbZsRZM0iayvWI4xGejJg3XJHT56gcmYdgmCGPdJF1UEBqUjucCRrFB+4HbJsbw==",
       "path": "zstdsharp.port/0.6.2",
       "hashPath": "zstdsharp.port.0.6.2.nupkg.sha512"
+    },
+    "JobConnect.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

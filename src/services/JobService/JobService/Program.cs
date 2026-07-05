@@ -1,23 +1,14 @@
+using JobConnect.Shared;
 using JobService.Interfaces;
 using JobService.Profiles;
 using JobService.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Driver;
 using Serilog;
-using Serilog.Context;
-using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog((context, services, loggerConfiguration) =>
-{
-    loggerConfiguration
-        .Enrich.FromLogContext()
-        .Enrich.WithProperty("Service", "JobService")
-        .WriteTo.Console(new RenderedCompactJsonFormatter());
-});
-
-builder.Services.AddHttpContextAccessor();
+builder.AddSharedObservability("JobService");
 builder.Services.AddSingleton<IMongoClient>(_ =>
 {
     var connectionString = builder.Configuration["MONGO__CONNECTION"] ?? "mongodb://localhost:27017/jobs";
@@ -53,32 +44,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "JobService API V1");
     c.RoutePrefix = "swagger";
 });
-app.Use(async (context, next) =>
-{
-    var correlationId = context.Request.Headers["X-Correlation-ID"].FirstOrDefault() ?? Guid.NewGuid().ToString("N");
-    context.Items["CorrelationId"] = correlationId;
-    context.Response.Headers["X-Correlation-ID"] = correlationId;
-
-    using var _ = LogContext.PushProperty("CorrelationId", correlationId);
-    await next();
-});
-
-app.MapGet("/health", async (HealthCheckService healthCheckService) =>
-{
-    var report = await healthCheckService.CheckHealthAsync();
-    var payload = new
-    {
-        status = report.Status.ToString().ToLowerInvariant(),
-        checks = report.Entries.Select(entry => new
-        {
-            name = entry.Key,
-            status = entry.Value.Status.ToString().ToLowerInvariant(),
-            description = entry.Value.Description
-        })
-    };
-
-    return Results.Json(payload, statusCode: report.Status == HealthStatus.Healthy ? 200 : 503);
-});
+app.UseSharedCorrelationMiddleware();
+app.MapSharedHealthEndpoint();
 
 app.MapGet("/", () => Results.Ok(new { service = "JobService", status = "running" }));
 
