@@ -1,8 +1,8 @@
 using ApplicationService.Data;
 using ApplicationService.Interfaces;
 using ApplicationService.Services;
-using JobConnect.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Shared.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;

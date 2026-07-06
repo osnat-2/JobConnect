@@ -1,6 +1,7 @@
 using CandidateService.DTO;
 using CandidateService.Services;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Infrastructure;
 
 namespace CandidateService.Controllers;
 
@@ -49,6 +50,16 @@ public class CandidatesController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         var deleted = await _service.DeleteAsync(id, cancellationToken);
         return deleted ? NoContent() : NotFound();
     }

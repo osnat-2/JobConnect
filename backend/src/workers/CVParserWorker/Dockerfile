@@ -1,7 +1,8 @@
 # CVParserWorker - Python worker
 FROM python:3.11-slim
 WORKDIR /app
-COPY requirements.txt .
+COPY CVParserWorker/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY CVParserWorker/ ./
+COPY shared/ ./shared/
 CMD ["python","worker.py"]

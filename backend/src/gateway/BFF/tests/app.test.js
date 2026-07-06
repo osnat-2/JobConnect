@@ -65,6 +65,65 @@ test('kanban aggregation endpoint combines application and candidate data', asyn
   }
 });
 
+test('login route proxies credentials to the auth service', async () => {
+  const app = createApp({
+    fetchImpl: async (url, options) => {
+      assert.equal(url, 'http://auth-service:80/api/auth/login');
+      assert.equal(options.method, 'POST');
+      assert.deepEqual(JSON.parse(options.body), { email: 'user@example.com', password: 'secret123' });
+      return makeJsonResponse({ accessToken: 'jwt-token', user: { email: 'user@example.com' } }, 200);
+    }
+  });
+
+  const server = app.listen(0);
+  const { port } = server.address();
+
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/auth/login`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'user@example.com', password: 'secret123' })
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 200);
+    assert.equal(body.accessToken, 'jwt-token');
+  } finally {
+    server.close();
+  }
+});
+
+test('auth middleware strips bearer tokens before forwarding downstream', async () => {
+  const app = createApp({
+    fetchImpl: async (url, options) => {
+      assert.equal(options.headers.authorization, undefined);
+      assert.equal(options.headers['x-user-id'], 'user-123');
+      assert.equal(options.headers['x-user-email'], 'user@example.com');
+      assert.equal(options.headers['x-user-roles'], 'recruiter,admin');
+      return makeJsonResponse({ ok: true });
+    }
+  });
+  process.env.AUTH_REQUIRED = 'true';
+
+  const server = app.listen(0);
+  const { port } = server.address();
+
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/jobs/hot`, {
+      headers: {
+        authorization: 'Bearer incoming-token',
+        'x-user-id': 'user-123',
+        'x-user-email': 'user@example.com',
+        'x-user-roles': 'recruiter,admin'
+      }
+    });
+    assert.equal(response.status, 200);
+  } finally {
+    server.close();
+    delete process.env.AUTH_REQUIRED;
+  }
+});
+
 test('authentication middleware rejects requests without a bearer token when enabled', async () => {
   const app = createApp({
     fetchImpl: async () => makeJsonResponse({ ok: true })

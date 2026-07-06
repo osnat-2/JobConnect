@@ -1,0 +1,73 @@
+<div class="candidate-page">
+  <div class="candidate-panel">
+    <div class="toolbar">
+      <h2>Candidates</h2>
+      <div class="filter">
+        <input
+          type="text"
+          placeholder="Search by name, email or phone"
+          [(ngModel)]="filter"
+          (input)="applyFilter()"
+        />
+      </div>
+    </div>
+
+    <div class="candidate-grid">
+      <div
+        class="candidate-card"
+        *ngFor="let candidate of candidates"
+        [class.selected]="candidate.id === selectedCandidate?.id"
+        (click)="selectCandidate(candidate)"
+      >
+        <div class="avatar">{{ candidate.firstName.charAt(0) + candidate.lastName.charAt(0) }}</div>
+        <div class="candidate-info">
+          <div class="name">{{ candidate.firstName }} {{ candidate.lastName }}</div>
+          <div class="email">{{ candidate.email }}</div>
+          <div class="phone">{{ candidate.phone || 'No phone provided' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="candidate-detail" *ngIf="selectedCandidate; else emptyState">
+    <div class="detail-header">
+      <div>
+        <h2>{{ selectedCandidate.firstName }} {{ selectedCandidate.lastName }}</h2>
+        <div class="subtitle">Candidate profile</div>
+      </div>
+      <div class="meta">Joined: {{ selectedCandidate.createdAtUtc | date:'mediumDate' }}</div>
+    </div>
+
+    <div class="detail-section">
+      <div class="detail-row">
+        <span>Email</span>
+        <strong>{{ selectedCandidate.email }}</strong>
+      </div>
+      <div class="detail-row">
+        <span>Phone</span>
+        <strong>{{ selectedCandidate.phone || 'Not available' }}</strong>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>Resume</h3>
+      <p *ngIf="selectedCandidate.resumeFileName; else noResume">
+        <strong>{{ selectedCandidate.resumeFileName }}</strong>
+      </p>
+      <ng-template #noResume>
+        <p>No resume uploaded yet.</p>
+      </ng-template>
+    </div>
+
+    <div class="detail-section">
+      <h3>Activity</h3>
+      <p>Last updated: {{ selectedCandidate.updatedAtUtc | date:'medium' }}</p>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="candidate-detail empty-state">
+      <p>Select a candidate to view profile details.</p>
+    </div>
+  </ng-template>
+</div>

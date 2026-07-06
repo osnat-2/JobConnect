@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../shared/services/api.service';
-import { CandidateProfile, CreateCandidateRequest } from '../../shared/models';
+import { ApiService } from '../../../shared/services/api.service';
+import { CandidateProfile, CreateCandidateRequest } from '../../../shared/models/candidate.models';
 
 /**
  * Candidates API Service

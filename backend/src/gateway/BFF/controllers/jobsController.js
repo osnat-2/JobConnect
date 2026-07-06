@@ -1,4 +1,5 @@
 const { fetchTextOrJson } = require('../services/proxyService');
+const { buildForwardHeaders } = require('../services/authService');
 
 function registerJobsRoutes(app, fetchImpl) {
   app.get(['/jobs', '/jobs/:path(*)'], async (req, res) => {
@@ -8,7 +9,7 @@ function registerJobsRoutes(app, fetchImpl) {
 
     try {
       const response = await fetchImpl(targetUrl, {
-        headers: { 'x-correlation-id': req.correlationId }
+        headers: buildForwardHeaders(req)
       });
       const payload = await fetchTextOrJson(response);
       return res.status(response.status).type('application/json').send(payload || '{}');

@@ -1,5 +1,5 @@
-using JobConnect.Shared;
 using JobService.Interfaces;
+using Shared.Infrastructure;
 using JobService.Profiles;
 using JobService.Services;
 using Microsoft.Extensions.Diagnostics.HealthChecks;

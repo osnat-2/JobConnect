@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { JobsComponent } from './components/jobs/jobs.component';
 
 /**
  * Jobs Feature Module
@@ -10,20 +11,16 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    component: JobsListComponent
+    component: JobsComponent
   },
   {
     path: ':id',
-    component: JobDetailComponent
+    component: JobsComponent
   }
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [JobsComponent],
   imports: [CommonModule, RouterModule.forChild(routes)]
 })
 export class JobsModule {}
-
-// Placeholder components (to be created)
-class JobsListComponent {}
-class JobDetailComponent {}

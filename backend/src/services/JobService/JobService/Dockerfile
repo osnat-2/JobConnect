@@ -1,8 +1,9 @@
 # JobService - .NET 8 multi-stage Dockerfile
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet publish -c Release -o /app
+COPY backend/src/services/JobService/JobService/. ./
+COPY backend/shared/dotnet/Shared.Infrastructure/ /shared/dotnet/Shared.Infrastructure/
+RUN dotnet publish ./JobService.csproj -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app

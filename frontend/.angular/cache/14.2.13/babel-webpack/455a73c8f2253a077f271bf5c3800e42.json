@@ -1,0 +1,1 @@
+{"ast":null,"code":"/**\r\n * Environment Configuration\r\n * Development environment settings\r\n */\nexport const environment = {\n  production: false,\n  apiUrl: 'http://localhost:8080/api',\n  logLevel: 'debug'\n};","map":null,"metadata":{},"sourceType":"module"}

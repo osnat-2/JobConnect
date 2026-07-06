@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { CandidateListComponent } from './components/candidate-list/candidate-list.component';
 
 /**
  * Candidates Feature Module
@@ -10,20 +12,16 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    component: CandidatesListComponent
+    component: CandidateListComponent
   },
   {
-    path: 'profile/:id',
-    component: CandidateProfileComponent
+    path: ':id',
+    component: CandidateListComponent
   }
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, RouterModule.forChild(routes)]
+  declarations: [CandidateListComponent],
+  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)]
 })
 export class CandidatesModule {}
-
-// Placeholder components (to be created)
-class CandidatesListComponent {}
-class CandidateProfileComponent {}

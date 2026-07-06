@@ -2,6 +2,7 @@ using JobService.DTO;
 using JobService.Interfaces;
 using JobService.Models;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Infrastructure;
 
 namespace JobService.Controllers;
 
@@ -40,6 +41,16 @@ public class JobsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<JobDocument>> CreateJob([FromBody] CreateJobRequest request)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Company))
         {
             return BadRequest(new { error = "Title and company are required." });
@@ -52,6 +63,16 @@ public class JobsController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<JobDocument>> UpdateJob(string id, [FromBody] UpdateJobRequest request)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         var updated = await _jobStore.UpdateAsync(id, request);
         return updated is null ? NotFound() : Ok(updated);
     }
@@ -59,6 +80,16 @@ public class JobsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteJob(string id)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         var deleted = await _jobStore.DeleteAsync(id);
         return deleted ? NoContent() : NotFound();
     }

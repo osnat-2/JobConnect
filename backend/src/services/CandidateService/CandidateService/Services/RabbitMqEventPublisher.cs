@@ -22,12 +22,13 @@ public class RabbitMqEventPublisher : IEventPublisher
             AutomaticRecoveryEnabled = true
         };
 
-        await using var connection = await factory.CreateConnectionAsync(cancellationToken);
-        await using var channel = await connection.CreateChannelAsync(new CreateChannelOptions(false, false, null, null), cancellationToken);
+        using var connection = await factory.CreateConnectionAsync(cancellationToken);
+        using var channel = await connection.CreateChannelAsync(new CreateChannelOptions(false, false, null, null), cancellationToken);
 
         await channel.ExchangeDeclareAsync("application-events", ExchangeType.Topic, durable: true, autoDelete: false, arguments: null, passive: false, noWait: false, cancellationToken: cancellationToken);
 
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(payload));
-        await channel.BasicPublishAsync<IBasicProperties>("application-events", eventName, false, null, body, cancellationToken);
+        var props = new BasicProperties();
+        await channel.BasicPublishAsync("application-events", eventName, false, props, body, cancellationToken);
     }
 }

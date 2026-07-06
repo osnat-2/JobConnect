@@ -2,6 +2,7 @@ using ApplicationService.DTO;
 using ApplicationService.Interfaces;
 using ApplicationService.Models;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Infrastructure;
 
 namespace ApplicationService.Controllers;
 
@@ -65,6 +66,16 @@ public class ApplicationsController : ControllerBase
     [HttpPatch("{id:guid}/status")]
     public async Task<ActionResult<ApplicationRecord>> UpdateStatus(Guid id, [FromBody] ApplicationStatus status, CancellationToken cancellationToken)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         var existing = await _store.GetApplicationByIdAsync(id, cancellationToken);
         if (existing is null)
         {
@@ -79,6 +90,16 @@ public class ApplicationsController : ControllerBase
     [HttpPost("{id:guid}/interviews")]
     public async Task<ActionResult<InterviewSchedule>> ScheduleInterview(Guid id, [FromBody] CreateInterviewRequest request, CancellationToken cancellationToken)
     {
+        if (!HttpContext.IsAuthenticated())
+        {
+            return Unauthorized(new { error = "Authentication required." });
+        }
+
+        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        {
+            return Forbid();
+        }
+
         var application = await _store.GetApplicationByIdAsync(id, cancellationToken);
         if (application is null)
         {

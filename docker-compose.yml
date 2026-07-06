@@ -3,11 +3,10 @@ version: '3.8'
 services:
   mongo:
     image: mongo:6.0
-    container_name: mongo
     volumes:
       - mongo-data:/data/db
     healthcheck:
-      test: ["CMD","mongo","--eval","db.adminCommand('ping')"]
+      test: ["CMD","mongosh","--quiet","--eval","db.adminCommand('ping').ok"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -57,7 +56,9 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
   job-service:
-    build: ./backend/src/services/JobService/JobService
+    build:
+      context: .
+      dockerfile: backend/src/services/JobService/JobService/Dockerfile
     container_name: job-service
     environment:
       - MONGO__CONNECTION=mongodb://mongo:27017/jobs
@@ -69,7 +70,9 @@ services:
         condition: service_healthy
 
   candidate-service:
-    build: ./backend/src/services/CandidateService/CandidateService
+    build:
+      context: .
+      dockerfile: backend/src/services/CandidateService/CandidateService/Dockerfile
     container_name: candidate-service
     environment:
       - POSTGRES__CONN=Host=postgres;Database=ats;Username=postgres;Password=postgres
@@ -78,7 +81,9 @@ services:
         condition: service_healthy
 
   application-service:
-    build: ./backend/src/services/ApplicationService/ApplicationService
+    build:
+      context: .
+      dockerfile: backend/src/services/ApplicationService/ApplicationService/Dockerfile
     container_name: application-service
     environment:
       - POSTGRES__CONN=Host=postgres;Database=ats;Username=postgres;Password=postgres
@@ -90,7 +95,9 @@ services:
         condition: service_healthy
 
   bff:
-    build: ./backend/src/gateway/BFF
+    build:
+      context: .
+      dockerfile: backend/src/gateway/BFF/Dockerfile
     container_name: bff
     ports:
       - "8080:8080"
@@ -103,7 +110,9 @@ services:
         condition: service_started
 
   cv-parser:
-    build: ./backend/src/workers/CVParserWorker
+    build:
+      context: ./backend/src/workers
+      dockerfile: CVParserWorker/Dockerfile
     container_name: cv-parser
     environment:
       - RABBITMQ__HOST=rabbitmq
@@ -116,7 +125,9 @@ services:
         condition: service_healthy
 
   notification-worker:
-    build: ./backend/src/workers/NotificationWorker
+    build:
+      context: ./backend/src/workers
+      dockerfile: NotificationWorker/Dockerfile
     container_name: notification-worker
     environment:
       - RABBITMQ__HOST=rabbitmq

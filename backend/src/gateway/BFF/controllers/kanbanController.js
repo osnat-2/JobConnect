@@ -1,4 +1,5 @@
 const { fetchWithRetry } = require('../services/proxyService');
+const { buildForwardHeaders } = require('../services/authService');
 
 function registerKanbanRoutes(app, fetchImpl) {
   app.get(['/aggregate/kanban', '/aggregate/kanban/:candidateId'], async (req, res) => {
@@ -13,10 +14,10 @@ function registerKanbanRoutes(app, fetchImpl) {
     try {
       const [applicationResp, candidateResp] = await Promise.all([
         fetchWithRetry(fetchImpl, `${applicationServiceUrl}/api/Applications/${candidateId}`, {
-          headers: { 'x-correlation-id': req.correlationId }
+          headers: buildForwardHeaders(req)
         }),
         fetchImpl(`${candidateServiceUrl}/api/Candidates/${candidateId}`, {
-          headers: { 'x-correlation-id': req.correlationId }
+          headers: buildForwardHeaders(req)
         })
       ]);
 

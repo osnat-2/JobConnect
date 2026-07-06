@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../shared/services/api.service';
+import { ApiService } from '../../../shared/services/api.service';
 import {
   ApplicationRecord,
   CreateApplicationRequest,
   CreateInterviewRequest,
   KanbanAggregateResponse,
   InterviewSchedule
-} from '../../shared/models';
+} from '../../../shared/models/application.models';
 
 /**
  * Applications API Service

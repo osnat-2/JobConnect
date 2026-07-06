@@ -4,8 +4,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CorrelationIdInterceptor } from './core/interceptors/correlation-id.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { SharedModule } from './shared/shared.module';
-import { ApplicationsModule } from './features/applications/applications.module';
+import { AppRoutingModule } from './app-routing.module';
 
 /**
  * Root Application Module
@@ -16,7 +17,7 @@ import { ApplicationsModule } from './features/applications/applications.module'
  */
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, SharedModule, ApplicationsModule],
+  imports: [BrowserModule, HttpClientModule, SharedModule, AppRoutingModule],
   providers: [
     /**
      * Register HTTP Interceptor for Correlation ID injection
@@ -25,6 +26,11 @@ import { ApplicationsModule } from './features/applications/applications.module'
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CorrelationIdInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     }
   ],

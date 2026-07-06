@@ -1,0 +1,34 @@
+<div class="jobs-container">
+  <aside class="jobs-list">
+    <h2>Jobs</h2>
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <ul>
+      <li *ngFor="let job of jobs" (click)="selectJob(job)" [class.selected]="selectedJob?.id === job.id">
+        <div class="title">{{ job.title }}</div>
+        <div class="meta">{{ job.company }} • {{ job.location }}</div>
+      </li>
+    </ul>
+  </aside>
+
+  <section class="job-detail">
+    <ng-container *ngIf="selectedJob; else empty">
+      <h2>{{ selectedJob.title }}</h2>
+      <div class="company">{{ selectedJob.company }} — {{ selectedJob.location }}</div>
+      <div class="posted">Posted: {{ selectedJob.postedAt | date }}</div>
+      <hr />
+      <div class="description">{{ selectedJob.description }}</div>
+      <h3>Requirements</h3>
+      <ul>
+        <li *ngFor="let r of selectedJob.requirements">{{ r }}</li>
+      </ul>
+      <h3>Tags</h3>
+      <div class="tags">
+        <span class="tag" *ngFor="let t of selectedJob.tags">{{ t }}</span>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="empty">Select a job to see details</div>
+    </ng-template>
+  </section>
+</div>

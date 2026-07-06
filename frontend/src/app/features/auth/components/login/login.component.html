@@ -1,0 +1,30 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <h2>Welcome back</h2>
+    <p class="subtitle">Sign in to continue to JobConnect.</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="you@example.com" />
+        <small *ngIf="submitted && loginForm.get('email')?.hasError('required')">Email is required.</small>
+        <small *ngIf="submitted && loginForm.get('email')?.hasError('email')">Please enter a valid email.</small>
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Enter your password" />
+        <small *ngIf="submitted && loginForm.get('password')?.hasError('required')">Password is required.</small>
+        <small *ngIf="submitted && loginForm.get('password')?.hasError('minlength')">Password must be at least 6 characters.</small>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <p class="footer-link">
+      New here? <a routerLink="/auth/register">Create an account</a>
+    </p>
+  </div>
+</div>

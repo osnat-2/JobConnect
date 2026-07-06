@@ -1,8 +1,8 @@
 using CandidateService.Data;
 using CandidateService.Interfaces;
 using CandidateService.Services;
-using backend.Shared;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Shared.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;

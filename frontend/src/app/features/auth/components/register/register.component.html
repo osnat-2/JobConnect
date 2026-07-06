@@ -1,0 +1,44 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <h2>Create your account</h2>
+    <p class="subtitle">Join JobConnect and manage your hiring workflow.</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="field-group">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" type="text" formControlName="fullName" placeholder="Your name" />
+        <small *ngIf="submitted && registerForm.get('fullName')?.hasError('required')">Full name is required.</small>
+        <small *ngIf="submitted && registerForm.get('fullName')?.hasError('minlength')">Name must be at least 2 characters.</small>
+      </div>
+
+      <div class="field-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="you@example.com" />
+        <small *ngIf="submitted && registerForm.get('email')?.hasError('required')">Email is required.</small>
+        <small *ngIf="submitted && registerForm.get('email')?.hasError('email')">Please enter a valid email.</small>
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="Choose a password" />
+        <small *ngIf="submitted && registerForm.get('password')?.hasError('required')">Password is required.</small>
+        <small *ngIf="submitted && registerForm.get('password')?.hasError('minlength')">Password must be at least 6 characters.</small>
+      </div>
+
+      <div class="field-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Confirm your password" />
+        <small *ngIf="submitted && registerForm.get('confirmPassword')?.hasError('required')">Please confirm your password.</small>
+        <small *ngIf="submitted && registerForm.hasError('passwordMismatch')">Passwords do not match.</small>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <p class="footer-link">
+      Already have an account? <a routerLink="/auth/login">Sign in</a>
+    </p>
+  </div>
+</div>

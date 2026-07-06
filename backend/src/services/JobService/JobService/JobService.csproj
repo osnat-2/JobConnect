@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../shared/JobConnect.Shared/JobConnect.Shared.csproj" />
     <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="8.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
@@ -18,4 +17,8 @@
     <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.12" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../../shared/dotnet/Shared.Infrastructure/Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -7,6 +7,7 @@
     "test": "node --test"
   },
   "dependencies": {
+    "@jobconnect/shared-nodejs": "file:../../../shared/nodejs",
     "express": "^4.18.2",
     "node-fetch": "^2.6.7"
   }
