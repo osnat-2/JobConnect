@@ -1,27 +1,44 @@
 # NotificationWorker
 
-Overview:
-- Background worker that consumes notification events from RabbitMQ and sends email or push notifications.
-- Handles retry and backoff for delivery failures.
-- Operates asynchronously and does not expose a public HTTP API.
+## 📝 Description
+NotificationWorker consumes application and interview events from RabbitMQ and delivers notifications such as email or other outbound messages. It is designed to work asynchronously and to publish delivery outcomes back into the event-driven workflow.
 
-Runtime:
-- Uses Python and `pika` to connect to RabbitMQ.
-- Can use email provider SDKs or SMTP libraries for message delivery.
-- Should emit delivery success or failure events back to RabbitMQ.
+## 🛠️ Tech Stack & Key Dependencies
+- **Runtime/Framework:** Python 3.11+
+- **Primary Libraries:** pika
 
-Configuration:
-- Requires RabbitMQ connection details.
-- Requires notification provider credentials or SMTP configuration via environment variables.
-- Use secrets for provider API keys and credentials.
+## 🚀 Getting Started
 
-Build and run:
-- Install dependencies: `pip install -r requirements.txt`
-- Run: `python worker.py`
-- Docker build: `docker build -t notification-worker .`
+### Prerequisites
+- Python 3.11 or later
+- pip
+- RabbitMQ (or the repository Docker Compose stack)
 
-Notes:
-- The worker now consumes interview and notification events from RabbitMQ and produces delivery/failure events.
-- Delivery is SMTP-backed when credentials are configured; otherwise the worker simulates successful delivery for local development.
-- Keep notification state in event-driven workflow rather than direct service database writes.
-- Ensure delivered metrics and failure events are traceable via Correlation IDs when possible.
+### Environment Variables / Configuration
+| Variable / Key | Description | Default Value |
+| --- | --- | --- |
+| RABBITMQ__HOST | RabbitMQ hostname | localhost |
+| RABBITMQ__PORT | RabbitMQ port | 5672 |
+| RABBITMQ__USER | RabbitMQ username | guest |
+| RABBITMQ__PASSWORD | RabbitMQ password | guest |
+| NOTIFICATION_EXCHANGE | Exchange for notification events | application-events |
+| NOTIFICATION_QUEUE | Worker queue name | notification-queue |
+| NOTIFICATION_DLX | Dead-letter exchange | notification-dlx |
+| NOTIFICATION_DLQ | Dead-letter queue | notification-dlq |
+
+### How to Run Locally
+```bash
+# 1) Move into the worker directory
+cd backend/src/workers/NotificationWorker
+
+# 2) Install dependencies
+pip install -r requirements.txt
+
+# 3) Start the worker
+python worker.py
+```
+
+```bash
+# Docker build example
+docker build -t notification-worker:local -f backend/src/workers/NotificationWorker/Dockerfile .
+```

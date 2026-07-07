@@ -12,6 +12,7 @@ export interface RegisterRequest {
   fullName?: string;
   email: string;
   password: string;
+  role: 'Candidate' | 'Manager';
 }
 
 export interface AuthResponse {
@@ -20,6 +21,7 @@ export interface AuthResponse {
   user?: {
     id?: string;
     email?: string;
+    roles?: string[];
   };
   message?: string;
 }
@@ -29,38 +31,61 @@ export interface AuthResponse {
 })
 export class AuthService {
   private readonly tokenKey = 'jobconnect_token';
+  private readonly userKey = 'jobconnect_user';
   private readonly authUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.authUrl}/login`, credentials).pipe(
-      tap((response) => this.storeToken(response))
+      tap((response) => this.storeCredentials(response))
     );
   }
 
   register(userData: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.authUrl}/register`, userData).pipe(
-      tap((response) => this.storeToken(response))
+      tap((response) => this.storeCredentials(response))
     );
   }
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userKey);
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
+  getUser(): { id?: string; email?: string; roles?: string[] } | undefined {
+    const raw = localStorage.getItem(this.userKey);
+    if (!raw) {
+      return undefined;
+    }
+
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return undefined;
+    }
+  }
+
+  getUserRoles(): string[] {
+    return this.getUser()?.roles ?? [];
+  }
+
   isAuthenticated(): boolean {
     return Boolean(this.getToken());
   }
 
-  private storeToken(response: AuthResponse): void {
+  private storeCredentials(response: AuthResponse): void {
     const token = response.accessToken || response.token;
     if (token) {
       localStorage.setItem(this.tokenKey, token);
+    }
+
+    if (response.user) {
+      localStorage.setItem(this.userKey, JSON.stringify(response.user));
     }
   }
 }

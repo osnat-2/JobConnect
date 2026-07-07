@@ -1,33 +1,49 @@
 # ApplicationService
 
-Overview:
-- .NET 8 ASP.NET Core Web API responsible for application lifecycle management, stage transitions, and interview scheduling.
-- Uses PostgreSQL for transactional service storage with strong ACID guarantees.
-- Publishes domain and saga events to RabbitMQ for downstream workers, notifications, and inter-service choreography.
-- Operates as an isolated bounded context with no direct cross-service database access.
+## 📝 Description
+ApplicationService handles the lifecycle of job applications, status transitions, and interview scheduling within JobConnect. It persists transactional application state in PostgreSQL and publishes event messages to RabbitMQ so downstream workers and other services can react asynchronously.
 
-Ports:
-- Service listens on container port `80`.
-- Example local mapping: `-p 5003:80`.
-- Expected health endpoint: `/health`, reporting PostgreSQL and RabbitMQ connectivity.
+## 🛠️ Tech Stack & Key Dependencies
+- **Runtime/Framework:** .NET 8 / ASP.NET Core Web API
+- **Primary Libraries:** Entity Framework Core, Npgsql, RabbitMQ.Client, Swagger / OpenAPI, Serilog, Health Checks
 
-Configuration:
-- `POSTGRES__CONN`: PostgreSQL connection string, e.g. `Host=postgres;Database=ats;Username=postgres;Password=postgres`
-- `RABBITMQ__HOST`: RabbitMQ hostname, e.g. `rabbitmq`
-- `ASPNETCORE_URLS`: `http://+:80` (set in Dockerfile)
-- `DOTNET_ENVIRONMENT`: optional environment mode
-- Additional RabbitMQ credentials or feature flags may be required for complete event bus integration.
+## 🚀 Getting Started
 
-Build and run:
-- Build: `dotnet build`
-- Publish: `dotnet publish -c Release -o /app`
-- Docker build: `docker build -t application-service:local .`
-- Docker run example:
-  `docker run --env POSTGRES__CONN="..." --env RABBITMQ__HOST="..." -p 5003:80 application-service:local`
+### Prerequisites
+- .NET SDK 8.0 or later
+- Docker Desktop
+- PostgreSQL 15 and RabbitMQ (or the repository Docker Compose stack)
 
-  Note: when running via `docker-compose`, this service listens on port 80 internally and is not published externally by default. Only the gateway/BFF is exposed externally.
+### Environment Variables / Configuration
+| Variable / Key | Description | Default Value |
+| --- | --- | --- |
+| POSTGRES__CONN | PostgreSQL connection string for application persistence | Host=localhost;Database=ats;Username=postgres;Password=postgres |
+| RABBITMQ__HOST | RabbitMQ hostname for event publication | localhost |
+| ASPNETCORE_URLS | ASP.NET listening URL | http://+:80 (container) |
+| ASPNETCORE_ENVIRONMENT | Runtime environment mode | Development |
 
-Notes:
-- Use EF Core with the Npgsql provider for PostgreSQL access.
-- Implement structured JSON logging and Correlation ID propagation for every request.
-- Follow the repository architecture: isolated service database, RabbitMQ event-driven integration, and health checks for dependencies.
+### How to Run Locally
+```bash
+# 1) Start the supporting infrastructure
+docker compose up -d postgres rabbitmq
+
+# 2) Move into the service directory
+cd backend/src/services/ApplicationService/ApplicationService
+
+# 3) Restore and build the service
+dotnet restore
+dotnet build
+
+# 4) Start the API
+dotnet run
+```
+
+The API will be reachable at:
+- Swagger UI: http://localhost:5286/swagger
+- Health endpoint: http://localhost:5286/health
+
+```bash
+# Containerized run example
+docker build -t application-service:local -f backend/src/services/ApplicationService/ApplicationService/Dockerfile .
+docker run --rm -p 5003:80 --env POSTGRES__CONN="Host=postgres;Database=ats;Username=postgres;Password=postgres" --env RABBITMQ__HOST="rabbitmq" application-service:local
+```

@@ -124,6 +124,39 @@ test('auth middleware strips bearer tokens before forwarding downstream', async 
   }
 });
 
+test('auth middleware decodes role claims from JWT and forwards them', async () => {
+  const payload = Buffer.from(JSON.stringify({ sub: 'user-123', email: 'user@example.com', role: 'Manager' }))
+    .toString('base64')
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+  const token = `header.${payload}.signature`;
+
+  const app = createApp({
+    fetchImpl: async (url, options) => {
+      assert.equal(options.headers.authorization, undefined);
+      assert.equal(options.headers['x-user-id'], 'user-123');
+      assert.equal(options.headers['x-user-email'], 'user@example.com');
+      assert.equal(options.headers['x-user-roles'], 'Manager');
+      return makeJsonResponse({ ok: true });
+    }
+  });
+
+  const server = app.listen(0);
+  const { port } = server.address();
+
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/jobs/hot`, {
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    });
+    assert.equal(response.status, 200);
+  } finally {
+    server.close();
+  }
+});
+
 test('authentication middleware rejects requests without a bearer token when enabled', async () => {
   const app = createApp({
     fetchImpl: async () => makeJsonResponse({ ok: true })
@@ -204,6 +237,40 @@ test('job endpoint forwards to the job service', async () => {
 
     assert.equal(response.status, 200);
     assert.deepEqual(body, [{ id: 'job-1', title: 'Engineer' }]);
+  } finally {
+    server.close();
+  }
+});
+
+test('candidate create route handles a downstream response without a JSON body', async () => {
+  const app = createApp({
+    fetchImpl: async (url, options) => {
+      assert.equal(url, 'http://candidate-service:80/api/Candidates');
+      assert.equal(options.method, 'POST');
+      return {
+        status: 201,
+        ok: true,
+        headers: {},
+        async text() {
+          return '';
+        }
+      };
+    }
+  });
+
+  const server = app.listen(0);
+  const { port } = server.address();
+
+  try {
+    const response = await fetch(`http://127.0.0.1:${port}/api/candidates`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ FirstName: 'Ada', LastName: 'Lovelace', Email: 'ada@example.com' })
+    });
+
+    assert.equal(response.status, 201);
+    const body = await response.json();
+    assert.deepEqual(body, {});
   } finally {
     server.close();
   }

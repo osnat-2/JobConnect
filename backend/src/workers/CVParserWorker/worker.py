@@ -30,7 +30,13 @@ def current_timestamp() -> str:
 
 def infer_file_type(storage_url: str, file_type: Optional[str]) -> str:
     if file_type:
-        return file_type.strip().lower()
+        normalized = file_type.strip().lower()
+        if normalized in ("application/pdf", "pdf"):
+            return "pdf"
+        if normalized in ("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"):
+            return "docx"
+        if normalized in ("application/msword", "doc"):
+            return "doc"
 
     parsed = urlparse(storage_url or "")
     path = parsed.path or storage_url
@@ -311,9 +317,21 @@ class CvParserWorker:
         output = StringIO()
         try:
             extract_text_to_fp(BytesIO(source_bytes), output, laparams=LAParams())
-            return output.getvalue().strip()
+            parsed_text = output.getvalue().strip()
+            if parsed_text:
+                return parsed_text
         except Exception as exc:
-            raise PermanentWorkerError(f"PDF parsing failed: {exc}") from exc
+            logger.warning("PDF parsing failed, attempting fallback text extraction.", exc_info=True)
+
+        fallback_text = source_bytes.decode("utf-8", errors="ignore").strip()
+        if fallback_text:
+            return fallback_text
+
+        fallback_text = source_bytes.decode("latin-1", errors="ignore").strip()
+        if fallback_text:
+            return fallback_text
+
+        raise PermanentWorkerError("PDF parsing failed and fallback text extraction returned empty content.")
 
     @staticmethod
     def extract_text_from_docx(source_bytes: bytes) -> str:

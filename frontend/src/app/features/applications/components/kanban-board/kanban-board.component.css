@@ -140,9 +140,9 @@
 .application-card {
   padding: 12px;
   margin-bottom: 10px;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   cursor: grab;
   transition: all 200ms ease;
 }

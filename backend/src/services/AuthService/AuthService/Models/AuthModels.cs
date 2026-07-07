@@ -4,6 +4,7 @@ public class RegisterRequest
 {
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string Role { get; set; } = "Candidate";
 }
 
 public class LoginRequest
@@ -23,6 +24,7 @@ public class AuthUser
 {
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;
+    public string[] Roles { get; set; } = Array.Empty<string>();
 }
 
 public class UserRecord
@@ -30,4 +32,5 @@ public class UserRecord
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
+    public string Role { get; set; } = "Candidate";
 }

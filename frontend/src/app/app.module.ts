@@ -7,7 +7,7 @@ import { CorrelationIdInterceptor } from './core/interceptors/correlation-id.int
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-
+import { FormsModule } from '@angular/forms';
 /**
  * Root Application Module
  * Configures:

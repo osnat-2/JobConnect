@@ -9,7 +9,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/auth',
+    redirectTo: '/auth/login',
     pathMatch: 'full'
   },
   {
@@ -21,6 +21,7 @@ const routes: Routes = [
   {
     path: 'candidates',
     canActivate: [AuthGuard],
+    data: { roles: ['Manager'] },
     loadChildren: () =>
       import('./features/candidates/candidates.module').then((m) => m.CandidatesModule)
   },

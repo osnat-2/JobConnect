@@ -27,6 +27,7 @@ public class AuthenticationServiceTests
         Assert.NotNull(result);
         Assert.False(string.IsNullOrWhiteSpace(result.AccessToken));
         Assert.Equal("candidate@example.com", result.User.Email);
+        Assert.Equal(new[] { "Candidate" }, result.User.Roles);
     }
 
     [Fact]
@@ -45,7 +46,8 @@ public class AuthenticationServiceTests
         await service.RegisterAsync(new RegisterRequest
         {
             Email = "recruiter@example.com",
-            Password = "StrongPassword123!"
+            Password = "StrongPassword123!",
+            Role = "Manager"
         });
 
         var result = await service.LoginAsync(new LoginRequest
@@ -57,5 +59,6 @@ public class AuthenticationServiceTests
         Assert.NotNull(result);
         Assert.False(string.IsNullOrWhiteSpace(result.AccessToken));
         Assert.Equal("recruiter@example.com", result.User.Email);
+        Assert.Equal(new[] { "Manager" }, result.User.Roles);
     }
 }

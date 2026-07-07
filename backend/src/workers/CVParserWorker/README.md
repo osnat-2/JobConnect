@@ -1,55 +1,44 @@
 # CVParserWorker
 
-Overview:
-- Python background worker that consumes RabbitMQ events, parses candidate CVs (PDF / DOCX), and publishes parsed metadata for CandidateService.
-- Implements durable queue handling, dead-letter routing, and structured JSON logging with Correlation IDs.
-- Uses RabbitMQ-only integration; it does not connect to any service database directly.
+## 📝 Description
+CVParserWorker is a Python background worker that processes uploaded CV documents and extracts structured information for candidate matching and enrichment. It consumes RabbitMQ events, parses document content, and emits downstream events for the rest of the ATS workflow.
 
-Supported events:
-- `DocumentUploaded`
-  - Consumed when CandidateService or another service publishes a new CV document event.
-  - Payload: `{ "documentId": "uuid", "candidateId": "uuid", "storageUrl": "https://...", "fileType": "pdf|docx" }
-`
-- `MatchingRequested`
-  - Consumed when an application match is requested.
-  - Payload: `{ "applicationId": "uuid", "candidateId": "uuid", "jobRequirements": [ ... ], "parsedText": "..." }
-`
+## 🛠️ Tech Stack & Key Dependencies
+- **Runtime/Framework:** Python 3.11+
+- **Primary Libraries:** aiohttp, pika, pdfminer.six, python-docx, pytest
 
-Published events:
-- `DocumentParsed`
-  - Emitted when CV parsing succeeds.
-  - Payload: `{ "documentId": "uuid", "candidateId": "uuid", "parsedText": "...", "extractedSkills": [ ... ], "parsedAt": "iso8601" }`
-- `DocumentParsingFailed`
-  - Emitted when parsing fails permanently.
-  - Payload: `{ "documentId": "uuid?", "candidateId": "uuid?", "errorReason": "...", "retryable": false, "failedAt": "iso8601" }`
-- `CandidateMatched`
-  - Optional event emitted for matching requests.
-  - Payload: `{ "applicationId": "uuid", "candidateId": "uuid", "matchScore": 0.0, "matchedSkills": [ ... ] }`
+## 🚀 Getting Started
 
-Configuration:
-- Requires RabbitMQ connection details via environment variables or host configuration.
-- May require CandidateService endpoint configuration if writing parsed data over HTTP.
-- Use a secrets store for any external parser credentials if added.
-- `RABBITMQ__HOST` - RabbitMQ hostname (e.g. `rabbitmq` in Docker Compose).
-- `RABBITMQ__PORT` - RabbitMQ port (default: `5672`).
-- `RABBITMQ__USER` / `RABBITMQ__PASSWORD` - RabbitMQ credentials.
-- `CVPARSER_EXCHANGE` - Topic exchange name (default: `application-events`).
-- `CVPARSER_QUEUE` - Worker queue name (default: `cv-parser-queue`).
-- `CVPARSER_DLX` - Dead-letter exchange name (default: `cv-parser-dlx`).
-- `CVPARSER_DLQ` - Dead-letter queue name (default: `cv-parser-dlq`).
+### Prerequisites
+- Python 3.11 or later
+- pip
+- RabbitMQ (or the repository Docker Compose stack)
 
-Build and run:
-- Install dependencies: `pip install -r requirements.txt`
-- Run locally: `python worker.py`
-- Docker build: `docker build -t cv-parser-worker .`
+### Environment Variables / Configuration
+| Variable / Key | Description | Default Value |
+| --- | --- | --- |
+| RABBITMQ__HOST | RabbitMQ hostname | localhost |
+| RABBITMQ__PORT | RabbitMQ port | 5672 |
+| RABBITMQ__USER | RabbitMQ username | guest |
+| RABBITMQ__PASSWORD | RabbitMQ password | guest |
+| CVPARSER_EXCHANGE | Exchange used for incoming/outgoing events | application-events |
+| CVPARSER_QUEUE | Worker queue name | cv-parser-queue |
+| CVPARSER_DLX | Dead-letter exchange | cv-parser-dlx |
+| CVPARSER_DLQ | Dead-letter queue | cv-parser-dlq |
 
-Testing:
-- Run unit tests with `pytest`.
+### How to Run Locally
+```bash
+# 1) Move into the worker directory
+cd backend/src/workers/CVParserWorker
 
-Notes:
-- This folder contains a placeholder worker loop; implement real message consumption and error handling.
-- Add retry/backoff logic and publish failure events to RabbitMQ when parsing or delivery fails.
-- Do not embed direct access to other service databases; use event messages or API calls.
-- Uses `aiohttp` for HTTP document download and `pika` for RabbitMQ.
-- Keeps full correlation traceability via `X-Correlation-ID` message headers.
-- DLQ behavior is configured on the worker queue for permanent failures.
+# 2) Install dependencies
+pip install -r requirements.txt
+
+# 3) Start the worker
+python worker.py
+```
+
+```bash
+# Docker build example
+docker build -t cv-parser-worker:local -f backend/src/workers/CVParserWorker/Dockerfile .
+```

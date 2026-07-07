@@ -10,7 +10,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddSharedObservability("CandidateService");
-var connectionString = builder.Configuration["POSTGRES__CONN"] ?? "Host=localhost;Database=ats;Username=postgres;Password=postgres";
+var connectionString = builder.Configuration["POSTGRES__CONN"] ?? builder.Configuration["POSTGRES:CONN"] ?? "Host=localhost;Database=ats;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<CandidateDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<ICandidateStore, EfCandidateStore>();
 builder.Services.AddScoped<ICandidateDocumentStore, EfCandidateDocumentStore>();
@@ -26,6 +26,12 @@ var healthChecks = builder.Services.AddHealthChecks();
 healthChecks.AddDbContextCheck<CandidateDbContext>("postgres", tags: new[] { "ready" });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<CandidateDbContext>();
+    dbContext.Database.EnsureCreated();
+}
 
 app.UseSerilogRequestLogging();
 app.UseSwagger();

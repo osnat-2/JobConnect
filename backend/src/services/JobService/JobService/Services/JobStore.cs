@@ -27,13 +27,13 @@ public class JobStore : IJobStore
         _logger = logger;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
-        var databaseName = configuration["MONGO__DATABASE"] ?? "jobs";
+        var databaseName = configuration["MONGO__DATABASE"] ?? configuration["MONGO:DATABASE"] ?? "jobs";
         var database = mongoClient.GetDatabase(databaseName);
         _jobs = database.GetCollection<JobDocument>("jobs");
-        _rabbitMqHost = configuration["RABBITMQ__HOST"];
+        _rabbitMqHost = configuration["RABBITMQ__HOST"] ?? configuration["RABBITMQ:HOST"];
 
-        var redisHost = configuration["REDIS__HOST"] ?? "localhost";
-        var redisPort = configuration["REDIS__PORT"] ?? "6379";
+        var redisHost = configuration["REDIS__HOST"] ?? configuration["REDIS:HOST"] ?? "localhost";
+        var redisPort = configuration["REDIS__PORT"] ?? configuration["REDIS:PORT"] ?? "6379";
 
         try
         {

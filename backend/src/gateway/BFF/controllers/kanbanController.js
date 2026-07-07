@@ -2,7 +2,7 @@ const { fetchWithRetry } = require('../services/proxyService');
 const { buildForwardHeaders } = require('../services/authService');
 
 function registerKanbanRoutes(app, fetchImpl) {
-  app.get(['/aggregate/kanban', '/aggregate/kanban/:candidateId'], async (req, res) => {
+  app.get(['/aggregate/kanban', '/aggregate/kanban/:candidateId', '/api/aggregate/kanban', '/api/aggregate/kanban/:candidateId'], async (req, res) => {
     const { candidateId } = req.params;
     if (!candidateId || candidateId.trim() === '') {
       return res.status(400).json({ error: 'invalid_request', message: 'candidateId is required.' });

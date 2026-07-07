@@ -33,7 +33,15 @@ export class LoginComponent {
     }
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigate(['/jobs']),
+      next: () => {
+        const roles = this.authService.getUserRoles();
+        if (roles.includes('Manager')) {
+          this.router.navigate(['/candidates']);
+          return;
+        }
+
+        this.router.navigate(['/jobs']);
+      },
       error: (error) => {
         this.errorMessage = error?.error?.message || 'Unable to sign in right now. Please try again.';
       }

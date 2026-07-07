@@ -10,7 +10,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddSharedObservability("ApplicationService");
-var connectionString = builder.Configuration["POSTGRES__CONN"] ?? "Host=localhost;Database=ats;Username=postgres;Password=postgres";
+var connectionString = builder.Configuration["POSTGRES__CONN"] ?? builder.Configuration["POSTGRES:CONN"] ?? "Host=localhost;Database=ats;Username=postgres;Password=postgres";
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IApplicationStore, EfApplicationStore>();
 builder.Services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
@@ -24,6 +24,12 @@ healthChecks.AddCheck("rabbitmq", () => HealthCheckResult.Healthy("RabbitMQ publ
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
+}
+
 app.UseSerilogRequestLogging();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -34,6 +40,22 @@ app.UseSwaggerUI(c =>
 
 app.UseSharedCorrelationMiddleware();
 app.MapSharedHealthEndpoint();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DatabaseSeeding");
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.SeedDevelopmentDataAsync();
+        logger.LogInformation("Development seed data initialized.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogWarning(ex, "Development seed data initialization failed.");
+    }
+}
 
 app.MapGet("/", () => Results.Ok(new { service = "ApplicationService", status = "running" }));
 app.MapControllers();

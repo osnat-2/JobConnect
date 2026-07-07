@@ -8,6 +8,7 @@
           placeholder="Search by name, email or phone"
           [(ngModel)]="filter"
           (input)="applyFilter()"
+          aria-label="Search candidates"
         />
       </div>
     </div>
@@ -57,6 +58,47 @@
       <ng-template #noResume>
         <p>No resume uploaded yet.</p>
       </ng-template>
+
+      <div class="upload-section">
+        <label class="upload-label">
+          <span>Choose CV</span>
+          <input type="file" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)" />
+        </label>
+        <span class="selected-file" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+        <button type="button" class="btn-upload" (click)="uploadResume()" [disabled]="uploading">
+          {{ uploading ? 'Uploading...' : 'Upload CV' }}
+        </button>
+      </div>
+      <div class="upload-error" *ngIf="uploadError">{{ uploadError }}</div>
+    </div>
+
+    <div class="detail-section apply-section">
+      <h3>Apply to a Job</h3>
+      <div class="apply-row">
+        <label class="apply-label">
+          Job
+          <select [(ngModel)]="selectedJobId" (change)="clearApplyFeedback()">
+            <option value="">Select a job</option>
+            <option *ngFor="let job of jobs" [value]="job.id">
+              {{ job.title }} — {{ job.company }}
+            </option>
+          </select>
+        </label>
+      </div>
+      <div class="apply-help">
+        <p *ngIf="!jobs.length">Loading available openings…</p>
+        <p *ngIf="jobs.length">Pick a job and upload this candidate's CV to submit an application.</p>
+      </div>
+      <button
+        type="button"
+        class="btn-upload"
+        (click)="applyWithResume()"
+        [disabled]="applying || !selectedJobId || (!selectedFile && !selectedCandidate.resumeFileName)"
+      >
+        {{ applying ? 'Submitting...' : 'Upload CV & Apply' }}
+      </button>
+      <div class="upload-error" *ngIf="applyError">{{ applyError }}</div>
+      <div class="apply-success" *ngIf="applyMessage">{{ applyMessage }}</div>
     </div>
 
     <div class="detail-section">

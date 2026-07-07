@@ -1,30 +1,49 @@
 # CandidateService
 
-Overview:
-- .NET 8 ASP.NET Core Web API for managing candidate profiles, contact information, CV metadata, and candidate search indexing.
-- Uses PostgreSQL as the isolated service database.
-- Publishes candidate-related domain events to RabbitMQ for notifications, application workflow updates, and downstream processing.
-- Designed as a bounded microservice with no direct cross-service database queries.
+## 📝 Description
+CandidateService manages candidate profiles, contact information, and CV document metadata for JobConnect. It stores candidate records in PostgreSQL and publishes candidate-related events to RabbitMQ so document processing and application workflows can remain decoupled.
 
-Ports:
-- Service listens on container port `80`.
-- Example local mapping: `-p 5002:80`.
-- Expected health endpoint: `/health`, verifying PostgreSQL connectivity.
+## 🛠️ Tech Stack & Key Dependencies
+- **Runtime/Framework:** .NET 8 / ASP.NET Core Web API
+- **Primary Libraries:** Entity Framework Core, Npgsql, RabbitMQ.Client, Swagger / OpenAPI, Serilog, Health Checks
 
-Configuration:
-- `POSTGRES__CONN`: PostgreSQL connection string, e.g. `Host=postgres;Database=ats;Username=postgres;Password=postgres`
-- `ASPNETCORE_URLS`: `http://+:80`
-- `DOTNET_ENVIRONMENT`: optional environment mode
-- Additional RabbitMQ configuration may be required if event publication is implemented.
+## 🚀 Getting Started
 
-Build and run:
-- Docker build: `docker build -t candidate-service:local .`
-- Docker run example:
-  `docker run --env POSTGRES__CONN="..." -p 5002:80 candidate-service:local`
+### Prerequisites
+- .NET SDK 8.0 or later
+- Docker Desktop
+- PostgreSQL 15 and RabbitMQ (or the repository Docker Compose stack)
 
-  Note: when running via `docker-compose`, this service listens on port 80 internally and is not published externally by default. Only the gateway/BFF is exposed externally.
+### Environment Variables / Configuration
+| Variable / Key | Description | Default Value |
+| --- | --- | --- |
+| POSTGRES__CONN | PostgreSQL connection string for candidate persistence | Host=localhost;Database=ats;Username=postgres;Password=postgres |
+| RABBITMQ__HOST | RabbitMQ hostname for event publishing and listening | localhost |
+| ASPNETCORE_URLS | ASP.NET listening URL | http://+:80 (container) |
+| ASPNETCORE_ENVIRONMENT | Runtime environment mode | Development |
 
-Notes:
-- Use EF Core with the Npgsql provider for PostgreSQL access.
-- Keep candidate data isolated and integrate with other services via RabbitMQ events.
-- Provide structured JSON logs and include the Correlation ID on requests.
+### How to Run Locally
+```bash
+# 1) Start PostgreSQL and RabbitMQ
+docker compose up -d postgres rabbitmq
+
+# 2) Move into the service directory
+cd backend/src/services/CandidateService/CandidateService
+
+# 3) Restore and build the service
+dotnet restore
+dotnet build
+
+# 4) Start the API
+dotnet run
+```
+
+Access the service at:
+- Swagger UI: http://localhost:5286/swagger
+- Health endpoint: http://localhost:5286/health
+
+```bash
+# Containerized run example
+docker build -t candidate-service:local -f backend/src/services/CandidateService/CandidateService/Dockerfile .
+docker run --rm -p 5002:80 --env POSTGRES__CONN="Host=postgres;Database=ats;Username=postgres;Password=postgres" --env RABBITMQ__HOST="rabbitmq" candidate-service:local
+```

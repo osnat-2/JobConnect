@@ -2,7 +2,9 @@ using ApplicationService.Controllers;
 using ApplicationService.DTO;
 using ApplicationService.Interfaces;
 using ApplicationService.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Infrastructure;
 
 namespace ApplicationService.Tests;
 
@@ -154,12 +156,33 @@ public class ApplicationsControllerTests
         Assert.IsType<NotFoundResult>(result.Result);
     }
 
+    private static ApplicationsController CreateAuthenticatedController(IApplicationStore store, IEventPublisher publisher)
+    {
+        var controller = new ApplicationsController(store, publisher);
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                Items =
+                {
+                    ["UserContext"] = new UserContext
+                    {
+                        UserId = "test-user",
+                        Roles = ["Admin"]
+                    }
+                }
+            }
+        };
+
+        return controller;
+    }
+
     [Fact]
     public async Task UpdateStatus_ReturnsOk_WhenFound()
     {
         var store = new FakeApplicationStore();
         var created = await store.CreateApplicationAsync(new ApplicationRecord { CandidateId = Guid.NewGuid(), JobId = Guid.NewGuid() });
-        var controller = new ApplicationsController(store, new FakeEventPublisher());
+        var controller = CreateAuthenticatedController(store, new FakeEventPublisher());
 
         var result = await controller.UpdateStatus(created.Id, ApplicationStatus.InReview, CancellationToken.None);
 
@@ -174,7 +197,7 @@ public class ApplicationsControllerTests
         var store = new FakeApplicationStore();
         var publisher = new FakeEventPublisher();
         var createdApplication = await store.CreateApplicationAsync(new ApplicationRecord { CandidateId = Guid.NewGuid(), JobId = Guid.NewGuid() });
-        var controller = new ApplicationsController(store, publisher);
+        var controller = CreateAuthenticatedController(store, publisher);
 
         var result = await controller.ScheduleInterview(createdApplication.Id, new CreateInterviewRequest
         {

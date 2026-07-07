@@ -1,35 +1,46 @@
-# BFF (Backend For Frontend)
+# BFF
 
-Overview:
-- Node.js Express-based BFF that aggregates requests for JobConnect.
-- Routes frontend calls to internal microservices and exposes composite endpoints.
-- Uses lightweight request composition and service orchestration rather than business logic.
+## 📝 Description
+The BFF acts as the gateway layer between the Angular frontend and the backend microservices. It aggregates requests for jobs, candidates, applications, and authentication, while also injecting correlation IDs and enforcing the shared API contract for the UI.
 
-Ports:
-- Listens on container port `8080`.
-- Example local Docker mapping: `-p 8080:8080`.
-- Health endpoint: `/health`.
+## 🛠️ Tech Stack & Key Dependencies
+- **Runtime/Framework:** Node.js / Express
+- **Primary Libraries:** Express, multer, node-fetch, custom logging middleware
 
-Features:
-- Correlation ID propagation for downstream requests
-- Bearer-token authentication when `AUTH_REQUIRED=true`
-- Kanban aggregation for application and candidate data
-- Proxy routing for job-service requests
-- Retry logic for transient downstream failures
+## 🚀 Getting Started
 
-Configuration:
-- `PORT`: override the listening port (default `8080`)
-- `AUTH_REQUIRED`: enable authentication checks (`true`/`false`)
-- `AUTH_TOKEN`: expected bearer token when auth is enabled
-- `APPLICATION_SERVICE_URL`, `CANDIDATE_SERVICE_URL`, `JOB_SERVICE_URL`: downstream service URLs
+### Prerequisites
+- Node.js 20 LTS or later
+- npm
+- Docker Desktop (optional, for the full stack)
 
-Build and run:
-- Docker build: `docker build -t bff:local .`
-- Docker run example: `docker run -p 8080:8080 -e AUTH_REQUIRED=true -e AUTH_TOKEN=development-token bff:local`
+### Environment Variables / Configuration
+| Variable / Key | Description | Default Value |
+| --- | --- | --- |
+| PORT | HTTP port for the BFF | 8080 |
+| AUTH_REQUIRED | Enables auth middleware checks | false |
+| AUTH_TOKEN | Expected bearer token when auth is enabled | none |
+| APPLICATION_SERVICE_URL | Base URL for ApplicationService | http://application-service:80 |
+| CANDIDATE_SERVICE_URL | Base URL for CandidateService | http://candidate-service:80 |
+| JOB_SERVICE_URL | Base URL for JobService | http://job-service:80 |
 
-Testing:
-- Run `npm test` from this folder to execute the gateway test suite.
+### How to Run Locally
+```bash
+# 1) Move into the BFF directory
+cd backend/src/gateway/BFF
 
-Dependencies:
-- `express`
-- `node-fetch`
+# 2) Install dependencies
+npm install
+
+# 3) Start the BFF
+npm start
+```
+
+The gateway will listen on:
+- http://localhost:8080
+
+```bash
+# Docker run example
+docker build -t bff:local -f backend/src/gateway/BFF/Dockerfile .
+docker run --rm -p 8080:8080 -e AUTH_REQUIRED=false bff:local
+```

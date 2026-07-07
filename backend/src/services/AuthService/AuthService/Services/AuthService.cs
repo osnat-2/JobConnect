@@ -31,7 +31,8 @@ public class AuthenticationService
         {
             Id = Guid.NewGuid(),
             Email = request.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Role = string.IsNullOrWhiteSpace(request.Role) ? "Candidate" : request.Role.Trim()
         };
 
         await _userStore.CreateAsync(user, cancellationToken);
@@ -71,7 +72,8 @@ public class AuthenticationService
             User = new AuthUser
             {
                 Id = user.Id,
-                Email = user.Email
+                Email = user.Email,
+                Roles = new[] { user.Role }
             }
         };
     }

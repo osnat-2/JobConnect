@@ -11,7 +11,7 @@ public class RabbitMqEventPublisher : IEventPublisher
 
     public RabbitMqEventPublisher(IConfiguration configuration)
     {
-        _hostName = configuration["RABBITMQ__HOST"] ?? "localhost";
+        _hostName = configuration["RABBITMQ__HOST"] ?? configuration["RABBITMQ:HOST"] ?? "localhost";
     }
 
     public Task PublishAsync(string eventName, object payload, CancellationToken cancellationToken = default)

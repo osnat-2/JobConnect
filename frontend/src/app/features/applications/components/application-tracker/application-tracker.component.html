@@ -12,64 +12,72 @@
   </div>
 
   <div class="tracker-board">
-    <div class="board-columns">
-      <ng-container *ngFor="let column of columns">
-        <div
-          class="board-column"
-          (dragover)="onDragOver($event)"
-          (dragleave)="onDragLeave($event)"
-          (drop)="onDrop($event, column.status)"
-        >
-          <div class="column-title">
-            <h2>{{ column.title }}</h2>
-            <span>{{ column.applications.length }}</span>
-          </div>
+    <ng-container *ngIf="hasApplications; else noApplications">
+      <div class="board-columns">
+        <ng-container *ngFor="let column of columns">
+          <div
+            class="board-column"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event, column.status)"
+          >
+            <div class="column-title">
+              <h2>{{ column.title }}</h2>
+              <span>{{ column.applications.length }}</span>
+            </div>
 
-          <div class="column-cards">
-            <div
-              class="application-card"
-              *ngFor="let application of column.applications"
-              draggable="true"
-              (dragstart)="onDragStart($event, application)"
-              (click)="onCardClick(application)"
-              [class.active]="selectedApplication?.id === application.id"
-            >
-              <div class="application-meta">
-                <strong>{{ application.jobId }}</strong>
-                <span>{{ application.appliedAt | date:'mediumDate' }}</span>
+            <div class="column-cards">
+              <div
+                class="application-card"
+                *ngFor="let application of column.applications"
+                draggable="true"
+                (dragstart)="onDragStart($event, application)"
+                (click)="onCardClick(application)"
+                [class.active]="selectedApplication?.id === application.id"
+              >
+                <div class="application-meta">
+                  <strong>{{ application.jobId }}</strong>
+                  <span>{{ application.appliedAt | date:'mediumDate' }}</span>
+                </div>
+                <div class="application-status">{{ application.status }}</div>
               </div>
-              <div class="application-status">{{ application.status }}</div>
             </div>
           </div>
-        </div>
-      </ng-container>
-    </div>
+        </ng-container>
+      </div>
 
-    <div class="tracker-detail" *ngIf="selectedApplication; else placeholder">
-      <div class="detail-card">
-        <h2>Application Details</h2>
-        <p><strong>Job:</strong> {{ selectedApplication.jobId }}</p>
-        <p><strong>Status:</strong> {{ selectedApplication.status }}</p>
-        <p><strong>Applied:</strong> {{ selectedApplication.appliedAt | date:'medium' }}</p>
-        <p><strong>Updated:</strong> {{ selectedApplication.updatedAt | date:'medium' }}</p>
-        <div *ngIf="selectedApplication.notes">
-          <h3>Notes</h3>
-          <p>{{ selectedApplication.notes }}</p>
-        </div>
-        <div class="interview-section" *ngIf="selectedApplication.interviews?.length">
-          <h3>Interviews</h3>
-          <ul>
-            <li *ngFor="let interview of selectedApplication.interviews">
-              {{ interview.scheduledAt | date:'medium' }} — {{ interview.status }}
-            </li>
-          </ul>
+      <div class="tracker-detail" *ngIf="selectedApplication; else placeholder">
+        <div class="detail-card">
+          <h2>Application Details</h2>
+          <p><strong>Job:</strong> {{ selectedApplication.jobId }}</p>
+          <p><strong>Status:</strong> {{ selectedApplication.status }}</p>
+          <p><strong>Applied:</strong> {{ selectedApplication.appliedAt | date:'medium' }}</p>
+          <p><strong>Updated:</strong> {{ selectedApplication.updatedAt | date:'medium' }}</p>
+          <div *ngIf="selectedApplication.notes">
+            <h3>Notes</h3>
+            <p>{{ selectedApplication.notes }}</p>
+          </div>
+          <div class="interview-section" *ngIf="selectedApplication.interviews?.length">
+            <h3>Interviews</h3>
+            <ul>
+              <li *ngFor="let interview of selectedApplication.interviews">
+                {{ interview.scheduledAt | date:'medium' }} — {{ interview.status }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <ng-template #placeholder>
+      <ng-template #placeholder>
+        <div class="tracker-detail empty-state">
+          <p>Select an application to view the details.</p>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <ng-template #noApplications>
       <div class="tracker-detail empty-state">
-        <p>Select an application to view the details.</p>
+        <p>No applications have been submitted for this candidate yet.</p>
       </div>
     </ng-template>
   </div>

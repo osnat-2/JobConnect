@@ -24,6 +24,10 @@ export class ApplicationTrackerComponent implements OnInit, OnDestroy {
   candidateId = '';
   private sub = new Subscription();
 
+  get hasApplications(): boolean {
+    return this.columns.some((column) => column.applications.length > 0);
+  }
+
   private readonly defaultColumns: KanbanColumn[] = [
     { id: 'applied', title: 'Applied', status: ApplicationStatus.Submitted, applications: [] },
     { id: 'interviewing', title: 'Interviewing', status: ApplicationStatus.InterviewScheduled, applications: [] },

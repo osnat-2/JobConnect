@@ -1,9 +1,9 @@
 FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
-COPY ../../../shared/nodejs ./shared/nodejs
+COPY src/gateway/BFF/package.json ./
+COPY shared/nodejs ./shared/nodejs
 RUN npm install --production
-COPY . .
+COPY src/gateway/BFF/. ./
 ENV PORT=8080
 EXPOSE 8080
 CMD ["node","server.js"]

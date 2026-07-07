@@ -4,14 +4,24 @@ namespace Shared.Infrastructure;
 
 public static class AuthorizationExtensions
 {
-    public static bool IsAuthenticated(this HttpContext context)
+    public static bool IsAuthenticated(this HttpContext? context)
     {
+        if (context is null)
+        {
+            return false;
+        }
+
         var user = context.Items["UserContext"] as UserContext;
         return !string.IsNullOrWhiteSpace(user?.UserId);
     }
 
-    public static bool IsInRole(this HttpContext context, params string[] roles)
+    public static bool IsInRole(this HttpContext? context, params string[] roles)
     {
+        if (context is null)
+        {
+            return false;
+        }
+
         var user = context.Items["UserContext"] as UserContext;
         if (user is null || user.Roles.Count == 0)
         {

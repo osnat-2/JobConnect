@@ -8,10 +8,12 @@ namespace CandidateService.Services;
 public class RabbitMqEventPublisher : IEventPublisher
 {
     private readonly string _hostName;
+    private readonly int _hostPort;
 
     public RabbitMqEventPublisher(IConfiguration configuration)
     {
-        _hostName = configuration["RABBITMQ__HOST"] ?? "localhost";
+        _hostName = configuration["RABBITMQ__HOST"] ?? configuration["RABBITMQ:HOST"] ?? "localhost";
+        _hostPort = int.TryParse(configuration["RABBITMQ__PORT"] ?? configuration["RABBITMQ:PORT"], out var port) ? port : 5672;
     }
 
     public async Task PublishAsync(string eventName, object payload, CancellationToken cancellationToken = default)
@@ -19,6 +21,7 @@ public class RabbitMqEventPublisher : IEventPublisher
         var factory = new ConnectionFactory
         {
             HostName = _hostName,
+            Port = _hostPort,
             AutomaticRecoveryEnabled = true
         };
 

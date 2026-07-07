@@ -25,7 +25,7 @@ public class DocumentParsedListener : BackgroundService
 
     public DocumentParsedListener(IConfiguration configuration, IServiceProvider serviceProvider, ILogger<DocumentParsedListener> logger)
     {
-        _hostName = configuration["RABBITMQ__HOST"] ?? "localhost";
+        _hostName = configuration["RABBITMQ__HOST"] ?? configuration["RABBITMQ:HOST"] ?? "localhost";
         _serviceProvider = serviceProvider;
         _logger = logger;
     }

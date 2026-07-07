@@ -55,7 +55,7 @@ public class CandidatesController : ControllerBase
             return Unauthorized(new { error = "Authentication required." });
         }
 
-        if (!HttpContext.IsInRole("Admin", "Recruiter"))
+        if (!HttpContext.IsInRole("Admin", "Recruiter", "Manager"))
         {
             return Forbid();
         }

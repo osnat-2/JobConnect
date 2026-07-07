@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,12 +26,18 @@ public class JwtTokenService
 
     public string CreateToken(UserRecord user)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim("sub", user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
+
+        if (!string.IsNullOrWhiteSpace(user.Role))
+        {
+            claims.Add(new Claim(ClaimTypes.Role, user.Role));
+            claims.Add(new Claim("role", user.Role));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

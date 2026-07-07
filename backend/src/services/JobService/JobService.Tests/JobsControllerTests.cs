@@ -2,12 +2,33 @@ using JobService.Controllers;
 using JobService.DTO;
 using JobService.Interfaces;
 using JobService.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Infrastructure;
 
 namespace JobService.Tests;
 
 public class JobsControllerTests
 {
+    private static JobsController CreateController(IJobStore store)
+    {
+        var controller = new JobsController(store);
+        var httpContext = new DefaultHttpContext();
+        httpContext.Items["UserContext"] = new UserContext
+        {
+            UserId = "test-user",
+            Email = "test@example.com",
+            Roles = ["Admin"]
+        };
+
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = httpContext
+        };
+
+        return controller;
+    }
+
     private sealed class FakeJobStore : IJobStore
     {
         private readonly List<JobDocument> _jobs = [];
@@ -90,7 +111,7 @@ public class JobsControllerTests
     {
         var store = new FakeJobStore();
         await store.CreateAsync(new CreateJobRequest { Title = "Developer", Company = "Contoso" });
-        var controller = new JobsController(store);
+        var controller = CreateController(store);
 
         var result = await controller.GetJobs(query: null, location: null, category: null, page: 1, pageSize: 20);
 
@@ -102,7 +123,7 @@ public class JobsControllerTests
     [Fact]
     public async Task GetJobById_ReturnsNotFound_WhenMissing()
     {
-        var controller = new JobsController(new FakeJobStore());
+        var controller = CreateController(new FakeJobStore());
 
         var result = await controller.GetJobById("missing-id");
 
@@ -112,7 +133,7 @@ public class JobsControllerTests
     [Fact]
     public async Task CreateJob_ReturnsBadRequest_WhenTitleOrCompanyMissing()
     {
-        var controller = new JobsController(new FakeJobStore());
+        var controller = CreateController(new FakeJobStore());
 
         var result = await controller.CreateJob(new CreateJobRequest { Title = "", Company = "" });
 
@@ -123,7 +144,7 @@ public class JobsControllerTests
     [Fact]
     public async Task CreateJob_ReturnsCreated_WhenValid()
     {
-        var controller = new JobsController(new FakeJobStore());
+        var controller = CreateController(new FakeJobStore());
 
         var result = await controller.CreateJob(new CreateJobRequest { Title = "Engineer", Company = "Contoso" });
 
@@ -137,7 +158,7 @@ public class JobsControllerTests
     {
         var store = new FakeJobStore();
         var created = await store.CreateAsync(new CreateJobRequest { Title = "Engineer", Company = "Contoso" });
-        var controller = new JobsController(store);
+        var controller = CreateController(store);
 
         var result = await controller.UpdateJob(created.Id, new UpdateJobRequest { Title = "Senior Engineer" });
 
@@ -149,7 +170,7 @@ public class JobsControllerTests
     [Fact]
     public async Task UpdateJob_ReturnsNotFound_WhenMissing()
     {
-        var controller = new JobsController(new FakeJobStore());
+        var controller = CreateController(new FakeJobStore());
 
         var result = await controller.UpdateJob("missing-id", new UpdateJobRequest { Title = "Senior Engineer" });
 
@@ -159,7 +180,7 @@ public class JobsControllerTests
     [Fact]
     public async Task DeleteJob_ReturnsNotFound_WhenMissing()
     {
-        var controller = new JobsController(new FakeJobStore());
+        var controller = CreateController(new FakeJobStore());
 
         var result = await controller.DeleteJob("missing-id");
 

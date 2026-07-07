@@ -42,7 +42,7 @@
 }
 
 .board-column {
-  background: #ffffff;
+  background: #f4f7fb;
   border: 1px solid #e5e7eb;
   border-radius: 20px;
   padding: 18px;
@@ -81,12 +81,13 @@
 }
 
 .application-card {
-  background: #f8fafc;
+  background: #ffffff;
   border: 1px solid transparent;
   border-radius: 16px;
   padding: 16px;
   cursor: grab;
-  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.18s ease;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
 }
 
 .application-card:hover {
@@ -121,7 +122,7 @@
 }
 
 .tracker-detail {
-  background: #ffffff;
+  background: #f4f7fb;
   border: 1px solid #e5e7eb;
   border-radius: 20px;
   padding: 24px;
